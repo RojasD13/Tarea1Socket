@@ -20,9 +20,9 @@ public class ClientManager extends Thread {
             DataInputStream input = new DataInputStream(client.getInputStream());
             DataOutputStream output = new DataOutputStream(client.getOutputStream());
 
-            int opcion = input.readInt();
+            int option = input.readInt();
 
-            switch (opcion) {
+            switch (option) {
                 case 1:
                     addImage(input, output);
                     break;
@@ -30,7 +30,7 @@ public class ClientManager extends Thread {
                     getImages(input, output);
                     break;
                 default:
-                    System.out.println("Opción no válida: " + opcion);
+                    System.out.println("Opción no válida: " + option);
                     break;
             }
 

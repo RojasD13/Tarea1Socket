@@ -5,51 +5,47 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Client {
-    private String HOST;
-    private int PUERTO;
     private Socket client;
-    private DataInputStream entrada;
-    private DataOutputStream salida;
+    private DataInputStream input;
+    private DataOutputStream output;
 
 
     public Client() throws IOException {
-        this.HOST = "localhost";
-        this.PUERTO  = 5000;
         init();
     }
 
     private void init() throws IOException {
-        this.client = new Socket(HOST, PUERTO);
-        this.entrada = new DataInputStream(client.getInputStream());
-        this.salida = new DataOutputStream(client.getOutputStream());
-        System.out.println("Cliente conectado al servidor " + HOST + " en el puerto " + PUERTO);
+        this.client = new Socket(Constants.HOST, Constants.PORT);
+        this.input = new DataInputStream(client.getInputStream());
+        this.output = new DataOutputStream(client.getOutputStream());
+        System.out.println("Cliente conectado al servidor " + client.getInetAddress().getHostName() + " en el puerto " + client.getPort());
     }
 
     public void addImage(String path) throws IOException {
-        salida.writeInt(1);
+        output.writeInt(1);
         File file = new File(path);
         FileInputStream fis = new FileInputStream(file);
-        byte[] bytesImagen = new byte[(int) file.length()];
-        salida.writeInt(bytesImagen.length);
-        salida.write(bytesImagen);
-        salida.flush();
+        byte[] bytesImage = new byte[(int) file.length()];
+        output.writeInt(bytesImage.length);
+        output.write(bytesImage);
+        output.flush();
 
         System.out.println("Imagen subida correctamente: ");
     }
 
-    public ArrayList<File> obtenerImagen() throws IOException {
-        salida.writeInt(2);
-        int folderSize=entrada.readInt();
+    public ArrayList<File> getImage() throws IOException {
+        output.writeInt(2);
+        int folderSize= input.readInt();
         ArrayList<File> files= new ArrayList<>();
         for (int i = 0; i < folderSize ; i++) {
-            int fileSize=entrada.readInt();
-            byte[] bytes= entrada.readNBytes(fileSize);
+            int fileSize= input.readInt();
+            byte[] bytes= input.readNBytes(fileSize);
             String copyPath = "resources/temp/copy"+System.currentTimeMillis()+".png";
-            File archivo = new File(copyPath);
-            try (FileOutputStream fos = new FileOutputStream(archivo)) {
+            File file = new File(copyPath);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(bytes);
             }
-            files.add(archivo);
+            files.add(file);
         }
         return files;
     }

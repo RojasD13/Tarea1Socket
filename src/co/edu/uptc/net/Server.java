@@ -19,12 +19,12 @@ public class Server extends Thread{
     public void start() {
         super.start();
         try {
-            ServerSocket server = new ServerSocket(5000);
+            ServerSocket server = new ServerSocket(Constants.PORT);
             System.out.println("Servidor iniciado");
             while (isRunning){
-                Socket cliente = server.accept();
-                System.out.println("Cliente conectado desde " + cliente.getInetAddress().getHostAddress());
-                new ClientManager(cliente).start();
+                Socket client = server.accept();
+                System.out.println("Cliente conectado desde " + client.getInetAddress().getHostAddress());
+                new ClientManager(client).start();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

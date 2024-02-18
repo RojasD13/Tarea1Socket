@@ -11,6 +11,7 @@ public class Control implements ActionListener {
     private JFPrincipalWindow window;
     private Client client;
 
+
     public Control() throws IOException {
         window = new JFPrincipalWindow(this);
         client = new Client();
@@ -31,7 +32,7 @@ public class Control implements ActionListener {
             case "OBTENER_IMAGENES":
 
                 try {
-                    window.fillPanel(client.obtenerImagen());
+                    window.fillPanel(client.getImage());
                     window.repaint();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

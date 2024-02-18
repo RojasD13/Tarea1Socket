@@ -9,10 +9,10 @@ public class Dialogs {
         while (true) {
             try {
                 input = JOptionPane.showInputDialog(null, message);
-                if (!input.isEmpty()) {
-                    return input.toUpperCase();
+                if (input.isEmpty()) {
+                    showMessage("No se permiten campos vacíos. Intente de nuevo.");
                 }
-                showMessage("No se permiten campos vacíos. Intente de nuevo.");
+                return input;
             } catch (java.util.InputMismatchException e) {
                 showMessage("Dato inválido, intente de nuevo.");
             }
