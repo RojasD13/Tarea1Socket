@@ -66,10 +66,10 @@ public class ClientManager extends Thread {
 
         for(File file: files){
              FileInputStream fis = new FileInputStream(file);
-             byte[] bytesImagen = new byte[(int) file.length()];
-             fis.read(bytesImagen);
-             output.writeInt(bytesImagen.length);
-             output.write(bytesImagen);
+             byte[] bytesImage = new byte[(int) file.length()];
+             fis.read(bytesImage);
+             output.writeInt(bytesImage.length);
+             output.write(bytesImage);
         }
         output.flush();
     }
