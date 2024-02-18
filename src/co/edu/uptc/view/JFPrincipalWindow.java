@@ -55,10 +55,8 @@ public class JFPrincipalWindow extends JFrame  {
 
 
     public String selectFile() {
-
        int result = fileChooser.showOpenDialog(this);
         if(result == JFileChooser.APPROVE_OPTION) {
-
             return fileChooser.getSelectedFile().getAbsolutePath();
         }
         return "";

@@ -27,10 +27,7 @@ public class Client {
 
     public void addImage(String path) throws IOException {
         salida.writeInt(1);
-
-
         File file = new File(path);
-
         FileInputStream fis = new FileInputStream(file);
         byte[] bytesImagen = new byte[(int) file.length()];
         salida.writeInt(bytesImagen.length);
@@ -42,17 +39,13 @@ public class Client {
 
     public ArrayList<File> obtenerImagen() throws IOException {
         salida.writeInt(2);
-
         int folderSize=entrada.readInt();
-
         ArrayList<File> files= new ArrayList<>();
-
         for (int i = 0; i < folderSize ; i++) {
             int fileSize=entrada.readInt();
             byte[] bytes= entrada.readNBytes(fileSize);
             String copyPath = "resources/temp/copy"+System.currentTimeMillis()+".png";
             File archivo = new File(copyPath);
-
             try (FileOutputStream fos = new FileOutputStream(archivo)) {
                 fos.write(bytes);
             }
