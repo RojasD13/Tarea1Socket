@@ -32,6 +32,7 @@ public class Control implements ActionListener {
 
                 try {
                     window.fillPanel(client.obtenerImagen());
+                    window.repaint();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

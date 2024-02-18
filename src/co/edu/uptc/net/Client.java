@@ -57,7 +57,6 @@ public class Client {
                 fos.write(bytes);
             }
             files.add(archivo);
-
         }
         return files;
     }

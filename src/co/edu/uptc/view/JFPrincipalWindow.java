@@ -15,12 +15,12 @@ public class JFPrincipalWindow extends JFrame  {
     private JPanel panel;
     private JPanel panelImages;
     private JFileChooser fileChooser;
-    private String imagePhat;
     private JScrollPane scrollPane;
 
     public JFPrincipalWindow(ActionListener l) {
         super("Subir y Visualizar Imágenes");
         initComponents(l);
+        repaint();
     }
 
     private void initComponents(ActionListener l) {
@@ -45,8 +45,9 @@ public class JFPrincipalWindow extends JFrame  {
 
         panel.add(btnViewImages);
         panelImages = new JPanel();
+        panelImages.setVisible(false);
         scrollPane = new JScrollPane(panelImages);
-        scrollPane.setBounds(10, 50, 400, 300);
+        scrollPane.setBounds(10, 50, 450, 300);
         panel.add(scrollPane);
 
         fileChooser = new JFileChooser();
@@ -57,6 +58,7 @@ public class JFPrincipalWindow extends JFrame  {
 
        int result = fileChooser.showOpenDialog(this);
         if(result == JFileChooser.APPROVE_OPTION) {
+
             return fileChooser.getSelectedFile().getAbsolutePath();
         }
         return "";
@@ -81,6 +83,8 @@ public class JFPrincipalWindow extends JFrame  {
                 ImageIcon icon = new ImageIcon(readImage);
                 JLabel preview = new JLabel(icon);
                 panelImages.add(preview);
+                panelImages.setVisible(true);
+                this.repaint();
             } catch (IOException ex) {
                 Logger.getLogger(JFPrincipalWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
