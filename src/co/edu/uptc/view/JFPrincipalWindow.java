@@ -74,19 +74,17 @@ public class JFPrincipalWindow extends JFrame  {
     }
 
     public void fillPanel(ArrayList<File>images) {
-        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panelImages.setLayout(new BoxLayout(panelImages,BoxLayout.Y_AXIS));
         for (File image : images) {
             try {
                 BufferedImage readImage = ImageIO.read(image);
                 ImageIcon icon = new ImageIcon(readImage);
                 JLabel preview = new JLabel(icon);
-                panel.add(preview);
+                panelImages.add(preview);
             } catch (IOException ex) {
                 Logger.getLogger(JFPrincipalWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-
-
 
 }
