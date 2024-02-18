@@ -64,12 +64,12 @@ public class ClientManager extends Thread {
 
         output.writeInt(files.length);
 
-        for(File file: files){
-             FileInputStream fis = new FileInputStream(file);
-             byte[] bytesImage = new byte[(int) file.length()];
-             fis.read(bytesImage);
-             output.writeInt(bytesImage.length);
-             output.write(bytesImage);
+        for (File file : files) {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytesImage = new byte[(int) file.length()];
+            fis.read(bytesImage);
+            output.writeInt(bytesImage.length);
+            output.write(bytesImage);
         }
         output.flush();
     }
