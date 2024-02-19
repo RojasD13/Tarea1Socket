@@ -3,12 +3,15 @@ package co.edu.uptc.net;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server extends Thread{
     boolean isRunning;
+    ArrayList <ClientManager> clients;
 
     public Server() {
         this.isRunning = true;
+        this.clients = new ArrayList<>();
     }
 
     public void setRunning(boolean running) {
@@ -24,7 +27,9 @@ public class Server extends Thread{
             while (isRunning){
                 Socket client = server.accept();
                 System.out.println("Cliente conectado desde " + client.getInetAddress().getHostAddress());
-                new ClientManager(client).start();
+                ClientManager c = new ClientManager(client);
+                clients.add(c);
+                c.start();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

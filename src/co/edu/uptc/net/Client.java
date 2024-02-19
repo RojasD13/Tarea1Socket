@@ -21,7 +21,8 @@ public class Client {
         System.out.println("Cliente conectado al servidor " + client.getInetAddress().getHostName() + " en el puerto " + client.getPort());
     }
 
-    public synchronized void addImage(String path) throws IOException {
+    public void addImage(String path) throws IOException {
+        System.out.println("Cliente conectado: en addImage " + client.isConnected());
         output.writeInt(1);
         File file = new File(path);
         // Se crea una FileInputStream para leer el archivo.
@@ -31,7 +32,6 @@ public class Client {
         byte[] bytesFile = new byte[(int) fileSize];
         // Se lee el archivo en el vector de bytes.
         int readBytes = fis.read(bytesFile);
-        // Se cierra la FileInputStream.
         fis.close();
         // Se verifica que se haya leído todo el archivo.
         if (readBytes != fileSize) {
@@ -43,15 +43,19 @@ public class Client {
         System.out.println("Imagen subida correctamente por el cliente.");
     }
 
-    public synchronized ArrayList<byte[]> getImage() throws IOException {
+    public ArrayList<byte[]> getImage() throws IOException {
         output.writeInt(2);
-        int directorySize= input.readInt();
-        ArrayList<byte[]> files= new ArrayList<>();
-        for (int i = 0; i < directorySize ; i++) {
-            int fileSize= input.readInt();
-            byte[] bytes= input.readNBytes(fileSize);
+        System.out.println("Cliente conectado: en getImage  " + client.isConnected());
+        int directorySize = input.readInt();
+        System.out.println("folder  " + directorySize);
+        ArrayList<byte[]> files = new ArrayList<>();
+        for (int i = 0; i < directorySize; i++) {
+            int fileSize = input.readInt();
+            System.out.println("file vector:  " + fileSize);
+            byte[] bytes = input.readNBytes(fileSize);
             files.add(bytes);
         }
+        System.out.println("Cliente conectado: en getImage  " + client.isConnected());
         output.flush();
         return files;
     }
