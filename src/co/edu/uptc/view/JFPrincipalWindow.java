@@ -18,7 +18,7 @@ public class JFPrincipalWindow extends JFrame  {
 
     public JFPrincipalWindow(ActionListener l) {
         super("Subir y Visualizar Imágenes");
-        this.setSize(500, 400);
+        this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents(l);
     }
@@ -26,7 +26,7 @@ public class JFPrincipalWindow extends JFrame  {
     private void initComponents(ActionListener l) {
         this.setLayout(null);
         jpButtons = new JPButtons(l);
-        jpButtons.setBounds(0,0,500,100);
+        jpButtons.setBounds(0,0,500,80);
         this.add(jpButtons);
         panelImages = new JPImages(new ArrayList<>());
         scrollPane = new JScrollPane(panelImages);

@@ -23,7 +23,6 @@ public class ClientManager extends Thread {
             while (isRunning) {
                 DataInputStream input = new DataInputStream(client.getInputStream());
                 DataOutputStream output = new DataOutputStream(client.getOutputStream());
-                System.out.println("Leyendo opción: ");
                 int option = input.readInt();
 
                 switch (option) {
@@ -51,9 +50,7 @@ public class ClientManager extends Thread {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bytesImage);
         }
-        //output.writeBoolean(true);
         output.flush();
-        System.out.println("Imagen subida correctamente: " + nameImagePath);
     }
 
     private void getImages(DataInputStream input, DataOutputStream output) throws IOException {

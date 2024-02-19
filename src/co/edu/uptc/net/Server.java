@@ -23,10 +23,8 @@ public class Server extends Thread{
         super.start();
         try {
             ServerSocket server = new ServerSocket(Constants.PORT);
-            System.out.println("Servidor iniciado");
             while (isRunning){
                 Socket client = server.accept();
-                System.out.println("Cliente conectado desde " + client.getInetAddress().getHostAddress());
                 ClientManager c = new ClientManager(client);
                 clients.add(c);
                 c.start();
