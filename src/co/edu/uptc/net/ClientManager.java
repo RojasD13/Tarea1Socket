@@ -8,64 +8,67 @@ import java.util.List;
 public class ClientManager extends Thread {
     private Socket client;
     private String path;
+    private boolean isRunning;
 
     public ClientManager(Socket client) {
         this.client = client;
         this.path = "resources/Images";
+        isRunning = true;
     }
 
     @Override
     public void run() {
         try {
-            DataInputStream input = new DataInputStream(client.getInputStream());
-            DataOutputStream output = new DataOutputStream(client.getOutputStream());
 
-            int option = input.readInt();
+            while (isRunning) {
+                DataInputStream input = new DataInputStream(client.getInputStream());
+                DataOutputStream output = new DataOutputStream(client.getOutputStream());
+                System.out.println("Leyendo opción: ");
+                int option = input.readInt();
 
-            switch (option) {
-                case 1:
-                    addImage(input, output);
-                    break;
-                case 2:
-                    getImages(input, output);
-                    break;
-                default:
-                    System.out.println("Opción no válida: " + option);
-                    break;
+                switch (option) {
+                    case 1:
+                        addImage(input, output);
+                        break;
+                    case 2:
+                        getImages(input, output);
+                        break;
+                    default:
+                        System.out.println("Opción no válida: " + option);
+                        break;
+                }
             }
-
-            client.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void addImage(DataInputStream input, DataOutputStream output) throws IOException {
-        String nameImage = input.readUTF();
+        String nameImagePath = path + "/copy" + System.currentTimeMillis() + ".png";
         int sizeImage = input.readInt();
-        byte[] bytesImage = new byte[sizeImage];
-        input.readFully(bytesImage);
-
-        File file = new File(nameImage);
+        byte[] bytesImage = input.readNBytes(sizeImage);
+        File file = new File(nameImagePath);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bytesImage);
         }
-
-        output.writeBoolean(true);
+        //output.writeBoolean(true);
         output.flush();
-
-        System.out.println("Imagen subida correctamente: " + nameImage);
+        System.out.println("Imagen subida correctamente: " + nameImagePath);
     }
 
     private void getImages(DataInputStream input, DataOutputStream output) throws IOException {
-
-        File[] files = imagesList(this.path);
-        output.writeInt(files.length);
-
-        for (File file : files) {
+        File[] directory = imagesList(this.path);
+        output.writeInt(directory.length);
+        byte[] bytesImage;
+        for (File file : directory) {
             FileInputStream fis = new FileInputStream(file);
-            byte[] bytesImage = new byte[(int) file.length()];
-            fis.read(bytesImage);
+            long fileSize = file.length();
+            bytesImage = new byte[(int) fileSize];
+            int readBytes = fis.read(bytesImage);
+            fis.close();
+            if (readBytes != fileSize) {
+                throw new IOException("No se pudo leer todo el archivo.");
+            }
             output.writeInt(bytesImage.length);
             output.write(bytesImage);
         }
@@ -73,6 +76,7 @@ public class ClientManager extends Thread {
     }
 
     private File[] imagesList(String directoryPath) {
+
         File directory = new File(directoryPath);
         File[] files = directory.listFiles();
         List<File> images = new ArrayList<>();
