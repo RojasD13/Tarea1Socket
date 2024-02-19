@@ -35,9 +35,9 @@ public class Client {
 
     public ArrayList<File> getImage() throws IOException {
         output.writeInt(2);
-        int folderSize= input.readInt();
+        int directorySize= input.readInt();
         ArrayList<File> files= new ArrayList<>();
-        for (int i = 0; i < folderSize ; i++) {
+        for (int i = 0; i < directorySize ; i++) {
             int fileSize= input.readInt();
             byte[] bytes= input.readNBytes(fileSize);
             String copyPath = "resources/temp/copy"+System.currentTimeMillis()+".png";

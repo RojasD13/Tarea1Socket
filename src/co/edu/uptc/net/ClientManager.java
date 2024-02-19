@@ -43,11 +43,10 @@ public class ClientManager extends Thread {
     private void addImage(DataInputStream input, DataOutputStream output) throws IOException {
         String nameImage = input.readUTF();
         int sizeImage = input.readInt();
-
         byte[] bytesImage = new byte[sizeImage];
         input.readFully(bytesImage);
 
-        File file = new File(path, nameImage);
+        File file = new File(nameImage);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bytesImage);
         }
@@ -61,7 +60,6 @@ public class ClientManager extends Thread {
     private void getImages(DataInputStream input, DataOutputStream output) throws IOException {
 
         File[] files = imagesList(this.path);
-
         output.writeInt(files.length);
 
         for (File file : files) {

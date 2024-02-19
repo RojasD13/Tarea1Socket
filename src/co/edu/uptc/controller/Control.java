@@ -23,14 +23,12 @@ public class Control implements ActionListener {
             case "SUBIR_IMAGEN":
                 try {
                     String path = window.selectFile();
-                    System.out.println(path);
                     client.addImage(path);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
                 break;
             case "OBTENER_IMAGENES":
-
                 try {
                     window.fillPanel(client.getImage());
                     window.repaint();
