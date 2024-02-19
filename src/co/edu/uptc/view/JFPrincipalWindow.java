@@ -1,6 +1,7 @@
 package co.edu.uptc.view;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -73,11 +74,17 @@ public class JFPrincipalWindow extends JFrame  {
         }
     }
 
-    public void fillPanel(ArrayList<File>images) {
+    public void fillPanel(ArrayList<byte[]>images) {
         panelImages.setLayout(new BoxLayout(panelImages,BoxLayout.Y_AXIS));
-        for (File image : images) {
+        for (byte[] image : images) {
             try {
-                BufferedImage readImage = ImageIO.read(image);
+                // Se crea una ByteArrayInputStream para leer el vector de bytes.
+                ByteArrayInputStream bais = new ByteArrayInputStream(image);
+                // Se crea una BufferedImage para almacenar la imagen.
+                BufferedImage getImage = ImageIO.read(bais);
+                // Se cierra la ByteArrayInputStream.
+                bais.close();
+                BufferedImage readImage = getImage;
                 ImageIcon icon = new ImageIcon(readImage);
                 JLabel preview = new JLabel(icon);
                 panelImages.add(preview);

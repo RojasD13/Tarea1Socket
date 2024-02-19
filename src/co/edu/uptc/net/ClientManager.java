@@ -40,34 +40,32 @@ public class ClientManager extends Thread {
         }
     }
 
-    private void addImage(DataInputStream input, DataOutputStream output) throws IOException {
+    private synchronized void addImage(DataInputStream input, DataOutputStream output) throws IOException {
         String nameImagePath = path +"/copy"+System.currentTimeMillis()+".png";
         int sizeImage = input.readInt();
         byte[] bytesImage = input.readNBytes(sizeImage);
-        for (int i = 0; i < bytesImage.length; i++) {
-            System.out.println(bytesImage[i]);
-        }
-        System.out.println(bytesImage);
         File file = new File(nameImagePath);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bytesImage);
         }
-
         output.writeBoolean(true);
         output.flush();
-
         System.out.println("Imagen subida correctamente: " + nameImagePath);
     }
 
-    private void getImages(DataInputStream input, DataOutputStream output) throws IOException {
-
-        File[] files = imagesList(this.path);
-        output.writeInt(files.length);
-
-        for (File file : files) {
+    private synchronized void getImages(DataInputStream input, DataOutputStream output) throws IOException {
+        File[] directory = imagesList(this.path);
+        output.writeInt(directory.length);
+        byte[] bytesImage;
+        for (File file : directory) {
             FileInputStream fis = new FileInputStream(file);
-            byte[] bytesImage = new byte[(int) file.length()];
-            fis.read(bytesImage);
+            long fileSize = file.length();
+            bytesImage = new byte[(int) fileSize];
+            int readBytes = fis.read(bytesImage);
+            fis.close();
+            if (readBytes != fileSize) {
+                throw new IOException("No se pudo leer todo el archivo.");
+            }
             output.writeInt(bytesImage.length);
             output.write(bytesImage);
         }

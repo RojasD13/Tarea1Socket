@@ -21,47 +21,38 @@ public class Client {
         System.out.println("Cliente conectado al servidor " + client.getInetAddress().getHostName() + " en el puerto " + client.getPort());
     }
 
-    public void addImage(String path) throws IOException {
+    public synchronized void addImage(String path) throws IOException {
         output.writeInt(1);
         File file = new File(path);
+        // Se crea una FileInputStream para leer el archivo.
         FileInputStream fis = new FileInputStream(file);
-
         // Se calcula el tamaño del archivo para crear un vector de bytes del tamaño adecuado.
         long fileSize = file.length();
         byte[] bytesFile = new byte[(int) fileSize];
-
         // Se lee el archivo en el vector de bytes.
         int readBytes = fis.read(bytesFile);
-
         // Se cierra la FileInputStream.
         fis.close();
-
         // Se verifica que se haya leído todo el archivo.
         if (readBytes != fileSize) {
             throw new IOException("No se pudo leer todo el archivo.");
         }
-
         output.writeInt(bytesFile.length);
         output.write(bytesFile);
         output.flush();
-
         System.out.println("Imagen subida correctamente por el cliente.");
     }
 
-    public ArrayList<File> getImage() throws IOException {
+    public synchronized ArrayList<byte[]> getImage() throws IOException {
         output.writeInt(2);
         int directorySize= input.readInt();
-        ArrayList<File> files= new ArrayList<>();
+        ArrayList<byte[]> files= new ArrayList<>();
         for (int i = 0; i < directorySize ; i++) {
             int fileSize= input.readInt();
             byte[] bytes= input.readNBytes(fileSize);
-            String copyPath = "resources/temp/copy"+System.currentTimeMillis()+".png";
-            File file = new File(copyPath);
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                fos.write(bytes);
-            }
-            files.add(file);
+            files.add(bytes);
         }
+        output.flush();
         return files;
     }
 
