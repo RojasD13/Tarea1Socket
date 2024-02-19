@@ -25,12 +25,27 @@ public class Client {
         output.writeInt(1);
         File file = new File(path);
         FileInputStream fis = new FileInputStream(file);
-        byte[] bytesImage = new byte[(int) file.length()];
-        output.writeInt(bytesImage.length);
-        output.write(bytesImage);
+
+        // Se calcula el tamaño del archivo para crear un vector de bytes del tamaño adecuado.
+        long fileSize = file.length();
+        byte[] bytesFile = new byte[(int) fileSize];
+
+        // Se lee el archivo en el vector de bytes.
+        int readBytes = fis.read(bytesFile);
+
+        // Se cierra la FileInputStream.
+        fis.close();
+
+        // Se verifica que se haya leído todo el archivo.
+        if (readBytes != fileSize) {
+            throw new IOException("No se pudo leer todo el archivo.");
+        }
+
+        output.writeInt(bytesFile.length);
+        output.write(bytesFile);
         output.flush();
 
-        System.out.println("Imagen subida correctamente: ");
+        System.out.println("Imagen subida correctamente por el cliente.");
     }
 
     public ArrayList<File> getImage() throws IOException {

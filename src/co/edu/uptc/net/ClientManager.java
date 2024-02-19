@@ -41,12 +41,14 @@ public class ClientManager extends Thread {
     }
 
     private void addImage(DataInputStream input, DataOutputStream output) throws IOException {
-        String nameImage = input.readUTF();
+        String nameImagePath = path +"/copy"+System.currentTimeMillis()+".png";
         int sizeImage = input.readInt();
-        byte[] bytesImage = new byte[sizeImage];
-        input.readFully(bytesImage);
-
-        File file = new File(nameImage);
+        byte[] bytesImage = input.readNBytes(sizeImage);
+        for (int i = 0; i < bytesImage.length; i++) {
+            System.out.println(bytesImage[i]);
+        }
+        System.out.println(bytesImage);
+        File file = new File(nameImagePath);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bytesImage);
         }
@@ -54,7 +56,7 @@ public class ClientManager extends Thread {
         output.writeBoolean(true);
         output.flush();
 
-        System.out.println("Imagen subida correctamente: " + nameImage);
+        System.out.println("Imagen subida correctamente: " + nameImagePath);
     }
 
     private void getImages(DataInputStream input, DataOutputStream output) throws IOException {
@@ -73,6 +75,7 @@ public class ClientManager extends Thread {
     }
 
     private File[] imagesList(String directoryPath) {
+        
         File directory = new File(directoryPath);
         File[] files = directory.listFiles();
         List<File> images = new ArrayList<>();
