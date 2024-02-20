@@ -15,6 +15,7 @@ public class JFPrincipalWindow extends JFrame  {
         super("Subir y Visualizar Imágenes");
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
         initComponents(l);
     }
 
