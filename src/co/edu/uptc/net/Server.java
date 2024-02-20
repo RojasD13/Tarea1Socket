@@ -22,7 +22,7 @@ public class Server extends Thread{
     public void start() {
         super.start();
         try {
-            ServerSocket server = new ServerSocket(Constants.PORT);
+            ServerSocket server = new ServerSocket(Server_Constants.PORT);
             while (isRunning){
                 Socket client = server.accept();
                 ClientManager c = new ClientManager(client);

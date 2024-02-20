@@ -15,7 +15,7 @@ public class Client {
     }
 
     private void init() throws IOException {
-        this.client = new Socket(Constants.HOST, Constants.PORT);
+        this.client = new Socket(Client_Constants.HOST, Client_Constants.PORT);
         this.input = new DataInputStream(client.getInputStream());
         this.output = new DataOutputStream(client.getOutputStream());
     }

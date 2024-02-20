@@ -1,14 +1,9 @@
 package co.edu.uptc.view;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class JFPrincipalWindow extends JFrame  {
     private JPButtons jpButtons;
