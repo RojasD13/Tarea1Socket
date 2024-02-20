@@ -48,7 +48,6 @@ public class Dialogs {
             // La entrada no es un número entero.
             return false;
         }
-
         // La entrada es una dirección IP válida.
         return true;
     }
@@ -59,6 +58,8 @@ public class Dialogs {
         try {
             num = Integer.parseInt(JOptionPane.showInputDialog(null, message));
         } catch (NumberFormatException e) {
+            showMessage("No olvide ingresar la próxima vez un núemro de puerto válido.\n      " +
+                    "                              Muchas gracias.");
             System.exit(0);
         }
         return num;
